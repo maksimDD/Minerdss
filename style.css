@@ -1,0 +1,457 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1a2a3a, #2a4a3a);
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.balance {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.deposit-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.game-area {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.bet-section {
+    margin-bottom: 20px;
+}
+
+label {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid #4caf50;
+    background-color: #1a2a3a;
+    color: white;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#startBtn {
+    background-color: #2196f3;
+    color: white;
+}
+
+#collectBtn {
+    background-color: #ff9800;
+    color: white;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.multiplier {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #ffd700;
+}
+
+.mode-selector {
+    margin: 20px 0;
+}
+
+select {
+    padding: 8px;
+    border: 2px solid #4caf50;
+    border-radius: 5px;
+    background-color: #2a4a3a;
+    color: white;
+    margin-left: 10px;
+}
+
+/* Стили игрового поля */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 20px auto;
+    max-width: 500px; /* Уменьшено для 5x5 */
+}
+
+.cell {
+    width: 80px;
+    height: 80px;
+    background-color: #2a4a3a;
+    border: 3px solid #4caf50;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cell:hover {
+    background-color: #3a5a4a;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cell.empty {
+    background-color: #4caf50;
+    color: white;
+}
+
+.cell.bomb {
+    background-color: #f44336;
+    color: white;
+}
+
+.cell.bomb-hidden {
+    background-color: rgba(255, 0, 0, 0.1); /* Лёгкий красный оттенок для подсказки */
+}
+
+/* Анимации */
+/* Анимация проигрыша — мигание красным */
+.loss-animation {
+    animation: lossFlash 0.5s ease-in-out 3;
+}
+
+@keyframes lossFlash {
+    0% { background-color: #ff4444; color: white; }
+    50% { background-color: #cc0000; color: white; }
+    100% { background-color: #ff4444; color: white; }
+}
+
+/* Анимация выигрыша — мерцание золотым */
+.win-animation {
+    animation: winSparkle 0.7s ease-in-out infinite;
+}
+
+@keyframes winSparkle {
+    0% { background: linear-gradient(45deg, #ffd700, #ffed4d); color: #8b4513; transform: scale(1); }
+    50% { background: linear-gradient(45deg, #ffed4d, #ffd700); color: #a0522d; transform: scale(1.05); }
+    100% { background: linear-gradient(45deg, #ffd700, #ffed4d); color: #8b4513; transform: scale(1); }
+}
+
+/* Анимация раскрытия всех клеток */
+.reveal-animation {
+    animation: cellReveal 0.4s ease-out;
+}
+
+@keyframes cellReveal {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Всплывающее окно выигрыша */
+.win-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #28a745, #198754);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    width: 400px;
+    max-width: 90%;
+    z-index: 1000;
+    display: none;
+    animation: popupIn 0.3s ease-out;
+}
+
+.win-popup h2 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.win-popup .amount {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #ffc107;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.win-popup p {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+.win-popup button {
+    padding: 12px 30px;
+    background-color: #ffc107;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.win-popup button:hover {
+    background-color: #e6ac00;
+    transform: translateY(-2px);
+}
+
+@keyframes popupIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Модальное окно пополнения */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+}
+
+.modal.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2a4a3a;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 300px;
+}
+
+.payment-methods button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+/* Всплывающее окно выигрыша */
+.win-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #28a745, #198754);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    width: 400px;
+    max-width: 90%;
+    z-index: 1000;
+    display: none;
+    animation: popupIn 0.3s ease-out;
+}
+
+.win-popup h2 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.win-popup .amount {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #ffc107;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Всплывающее окно проигрыша */
+.loss-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    width: 400px;
+    max-width: 90%;
+    z-index: 1000;
+    display: none;
+    animation: popupIn 0.3s ease-out;
+}
+
+.loss-popup h2 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.loss-popup .amount {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #f8d7da;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Общие стили для кнопок в всплывающих окнах */
+.win-popup button,
+.loss-popup button {
+    padding: 12px 30px;
+    background-color: #ffc107;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.win-popup button:hover,
+.loss-popup button:hover {
+    background-color: #e6ac00;
+    transform: translateY(-2px);
+}
+
+/* Анимация появления всплывающих окон */
+@keyframes popupIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+/* Пустые клетки при загрузке страницы */
+.cell.empty {
+    background-color: #e0e0e0;
+    border: 2px solid #b0b0b0;
+    cursor: not-allowed; /* Курсор запрещён, пока игра не начата */
+}
+
+/* Клетки во время игры (активные) */
+.cell:not(.empty):not(.bomb):not(.revealed) {
+    background-color: #4a90e2;
+    border: 2px solid #357abd;
+    cursor: pointer;
+}
+
+/* При наведении на активные клетки */
+.cell:not(.empty):hover {
+    background-color: #5aa1f2;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}
+* {
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+    user-select: none; /* Стандартный синтаксис */
+}
+.cell {
+    width: 60px; /* Было 80px, уменьшаем для компактности */
+    height: 60px;
+    font-size: 24px; /* Увеличиваем текст внутри клетки */
+}
+
+button, .deposit-btn {
+    padding: 15px 25px; /* Больше отступов */
+    font-size: 18px; /* Крупнее шрифт */
+}
