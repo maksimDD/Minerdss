@@ -2,15 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Miner</title>
     <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.body.style.touchAction = 'manipulation';
-    });
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.touchAction = 'manipulation';
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -24,29 +23,36 @@
             <div class="bet-section">
                 <label for="bet">Ставка:</label>
                 <input type="number" id="bet" min="1" max="1000" value="10">
-                <button id="startBtn" class="btn btn-start">Начать игру</button>
-                <button id="collectBtn" class="btn btn-collect">Забрать выигрыш</button>
             </div>
 
             <div class="multiplier">Коэффициент: <span id="multiplier">1.00x</span></div>
 
-            <div class="mode-selector">
-                <label>Режим (бомб на поле):</label>
-                <select id="bombMode" onchange="updateBombMode()">
-                    <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="24">24</option>
-                </select>
+            <div class="grid" id="grid"></div>
+        </div>
+
+        <!-- Кнопки управления внизу -->
+        <div class="controls">
+            <div class="control-group">
+                <button id="startBtn" class="btn btn-start">Начать игру</button>
+                <button id="collectBtn" class="btn btn-collect">Забрать выигрыш</button>
             </div>
 
-            <div class="grid" id="grid"></div>
+            <!-- Режимы игры в строчку -->
+            <div class="mode-selector">
+                <label>Режим (бомб на поле):</label>
+                <div class="mode-buttons">
+                    <button class="mode-btn active" data-bombs="2">2</button>
+            <button class="mode-btn" data-bombs="3">3</button>
+            <button class="mode-btn" data-bombs="4">4</button>
+            <button class="mode-btn" data-bombs="5">5</button>
+            <button class="mode-btn" data-bombs="6">6</button>
+            <button class="mode-btn" data-bombs="7">7</button>
+            <button class="mode-btn" data-bombs="8">8</button>
+            <button class="mode-btn" data-bombs="9">9</button>
+            <button class="mode-btn" data-bombs="10">10</button>
+            <button class="mode-btn" data-bombs="24">24</button>
+                </div>
+            </div>
         </div>
 
         <!-- Всплывающее окно выигрыша -->
