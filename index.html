@@ -15,7 +15,7 @@
     <div class="container">
         <header>
             <h1>Miner</h1>
-            <div class="balance">Баланс: <span id="balance">1000</span> $</div>
+            <div class="balance">Баланс: <span id="balance">1000</span> \$</div>
             <button class="deposit-btn" onclick="showDepositModal()">Пополнить</button>
         </header>
 
@@ -28,59 +28,56 @@
             <div class="multiplier">Коэффициент: <span id="multiplier">1.00x</span></div>
 
             <div class="grid" id="grid"></div>
-        </div>
 
-        <!-- Кнопки управления внизу -->
-        <div class="controls">
-            <div class="control-group">
-                <button id="startBtn" class="btn btn-start">Начать игру</button>
-                <button id="collectBtn" class="btn btn-collect">Забрать выигрыш</button>
-            </div>
+            <!-- ПЕРЕНЕСЕННЫЙ БЛОК УПРАВЛЕНИЯ (БЫЛ В ОТДЕЛЬНОМ DIV "controls") -->
+            <div class="game-controls">
+                <div class="control-group">
+                    <button id="startBtn" class="btn btn-start">Начать игру</button>
+                    <button id="collectBtn" class="btn btn-collect">Забрать выигрыш</button>
+                </div>
 
-            <!-- Режимы игры в строчку -->
-            <div class="mode-selector">
-                <label>Режим (бомб на поле):</label>
-                <div class="mode-buttons">
-                    <button class="mode-btn active" data-bombs="2">2</button>
-            <button class="mode-btn" data-bombs="3">3</button>
-            <button class="mode-btn" data-bombs="4">4</button>
-            <button class="mode-btn" data-bombs="5">5</button>
-            <button class="mode-btn" data-bombs="6">6</button>
-            <button class="mode-btn" data-bombs="7">7</button>
-            <button class="mode-btn" data-bombs="8">8</button>
-            <button class="mode-btn" data-bombs="9">9</button>
-            <button class="mode-btn" data-bombs="10">10</button>
-            <button class="mode-btn" data-bombs="24">24</button>
+                <div class="mode-selector">
+                    <label>Режим (бомб на поле):</label>
+                    <div class="mode-buttons">
+                        <button class="mode-btn active" data-bombs="2">2</button>
+                        <button class="mode-btn" data-bombs="3">3</button>
+                        <button class="mode-btn" data-bombs="4">4</button>
+                        <button class="mode-btn" data-bombs="5">5</button>
+                        <button class="mode-btn" data-bombs="6">6</button>
+                        <button class="mode-btn" data-bombs="7">7</button>
+                        <button class="mode-btn" data-bombs="8">8</button>
+                        <button class="mode-btn" data-bombs="9">9</button>
+                        <button class="mode-btn" data-bombs="10">10</button>
+                        <button class="mode-btn" data-bombs="24">24</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Всплывающее окно выигрыша -->
+        <!-- Всплывающие окна (без изменений) -->
         <div id="winPopup" class="win-popup">
             <h2>🎉 ПОБЕДА! 🎉</h2>
-            <div class="amount" id="winAmount">0 $</div>
-            <p>Ваш новый баланс: <span id="newBalance">0</span> $</p>
+            <div class="amount" id="winAmount">0 \$</div>
+            <p>Ваш новый баланс: <span id="newBalance">0</span> \$</p>
             <button onclick="closeWinPopup()">Продолжить</button>
         </div>
 
-        <!-- Всплывающее окно проигрыша -->
         <div id="lossPopup" class="loss-popup">
             <h2>💥 ПРОИГРЫШ! 💥</h2>
-            <div class="amount" id="lossAmount">0 $</div>
-            <p>Текущий баланс: <span id="currentBalance">0</span> $</p>
+            <div class="amount" id="lossAmount">0 \$</div>
+            <p>Текущий баланс: <span id="currentBalance">0</span> \$</p>
             <button onclick="closeLossPopup()">Продолжить</button>
         </div>
 
-        <!-- Модальное окно пополнения баланса -->
         <div id="deposit-modal" class="modal">
             <div class="modal-content">
                 <span class="close-modal" onclick="hideDepositModal()">&times;</span>
                 <h2>Пополнение баланса</h2>
                 <div class="payment-methods">
-                    <button onclick="deposit('Crypto Bot')">Crypto Bot (+500$)</button>
-            <button onclick="deposit('Ton')">Ton (+300$)</button>
-            <button onclick="deposit('USDT')">USDT (+200$)</button>
-            <button onclick="deposit('Другое')">Другое (+100$)</button>
+                    <button onclick="deposit('Crypto Bot')">Crypto Bot (+500\$)</button>
+                    <button onclick="deposit('Ton')">Ton (+300\$)</button>
+                    <button onclick="deposit('USDT')">USDT (+200\$)</button>
+                    <button onclick="deposit('Другое')">Другое (+100\$)</button>
                 </div>
             </div>
         </div>
